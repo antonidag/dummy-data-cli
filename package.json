@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "dummy-json": "^3.0.5"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "type": "module"
+}
