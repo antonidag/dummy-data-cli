@@ -1,11 +1,10 @@
 import dummyjson from 'dummy-json';
-import fs from 'node:fs';
+import fs from 'node:fs/promises';
 import { forEachBenchmarkTemplate } from './templates/main.js';
-
 
 const start = 0;
 const increments = 500;
-const stop = 10000;
+const stop = 10500;
 const outputFolder = './output'; 
 const fileExtension = 'json';
 const fileNamePrefix = 'generated';
@@ -14,18 +13,22 @@ const fileNameSeparator  = '_';
 const iterations = calculateIterations(start, increments, stop);
 console.log(`Number of files generated: ${iterations}`);
 
-for (let index = start; index < stop;) {
-    console.log(`Writing file ${index}.json`)
-    const template = forEachBenchmarkTemplate(index)
-
-    console.log('Applied template: ' +  template)
-    fs.writeFile(`${outputFolder}/${fileNamePrefix}${fileNameSeparator}${index}.${fileExtension}`, dummyjson.parse(template), err => {
-        if (err) {
-            throw new Error(err);
+(async function generateFiles() {
+    for (let index = start; index < stop; index += increments) {
+        try {
+            console.log(`Writing file ${index}.json`);
+            const template = forEachBenchmarkTemplate(index);
+            console.log('Applied template: ' + template);
+            
+            const filePath = `${outputFolder}/${fileNamePrefix}${fileNameSeparator}${index}.${fileExtension}`;
+            const data = dummyjson.parse(template);
+            
+            await fs.writeFile(filePath, data);
+        } catch (err) {
+            console.error(`Error writing file ${index}: ${err}`);
         }
-    });
-    index = index + increments;
-}
+    }
+})();
 
 function calculateIterations(start, increments, stop) {
     if (increments <= 0) {
@@ -37,5 +40,3 @@ function calculateIterations(start, increments, stop) {
     
     return iterations;
 }
-
-
