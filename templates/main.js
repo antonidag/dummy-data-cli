@@ -1,5 +1,5 @@
 
-export function forEachBenchmarkTemplate(index) {
+export function main(index) {
     return `
     [
       {{#repeat ${index}}}

@@ -1,9 +1,14 @@
 {
-  "dependencies": {
-    "dummy-json": "^3.0.5"
+  "name": "ddcli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ddcli.js",
+  "bin": {
+    "ddcli": "./ddcli.js"
   },
-  "scripts": {
-    "start": "node index.js"
+  "dependencies": {
+    "commander": "^9.0.0",
+    "dummy-json": "^3.0.5"
   },
   "type": "module"
 }
