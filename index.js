@@ -17,7 +17,7 @@ console.log(`Number of files generated: ${iterations}`);
 
 for (let index = start; index < stop;) {
     console.log(`Writing file ${index}.json`)
-    const template = loadTemplate();
+    const template = forEachBenchmarkTemplate(index)
 
     fs.writeFile(`${outputFolder}/${fileNamePrefix}${fileNameSeparator}${index}.${fileExtension}`, dummyjson.parse(template), err => {
         if (err) {
