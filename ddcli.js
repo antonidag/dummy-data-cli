@@ -5,13 +5,14 @@ import dummyjson from 'dummy-json';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import inquirer from 'inquirer';
 
 const program = new Command();
 
 program
   .option('-t, --template <path>', 'Path to the template JS file')
   .option('-s, --start <number>', 'Starting index', 0)
-  .option('-i, --increment <number>', 'Increment value', 500)
+  .option('-i, --increment <number>', 'Increment value', 1)
   .option('-e, --stop <number>', 'Stopping index', 10500)
   .option('-o, --output <path>', 'Output folder', './output')
   .option('-f, --file-prefix <string>', 'File name prefix', 'generated')
@@ -34,6 +35,20 @@ const fileNameSeparator = options.separator;
     const templatePath = path.resolve(options.template);
     const templateURL = pathToFileURL(templatePath).href;
     const { main } = await import(templateURL);
+
+    const { confirm } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'confirm',
+        message: `You are about to generate ${calculateIterations(start, increments, stop)} files.\nStarting at ${start} with increments of ${increments} and end at ${stop}?\nTemplate: ${String(main)}`,
+        default: false,
+      },
+    ]);
+
+    if (!confirm) {
+      console.log('Operation cancelled.');
+      return;
+    }
 
     for (let index = start; index < stop; index += increments) {
       console.log(`Writing file ${index}.${fileExtension}`);
