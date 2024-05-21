@@ -38,4 +38,5 @@ ddcli -t ./templates/main.js -i 500 -s 0 -e 10500 -o ./output
 This will then create 21, starting from 0, stoping at 10500 with increments of 500. 
 
 ## Potentials features
-- Instead of using [dummy-json](https://www.npmjs.com/package/dummy-json) perhaps look into [Faker.js](https://fakerjs.dev/) since community and more well used framework. 
+- Instead of using [dummy-json](https://www.npmjs.com/package/dummy-json) perhaps look into [Faker.js](https://fakerjs.dev/) since community and more well used framework.
+- Switch out to Typescript! Or just use JSDoc? 
