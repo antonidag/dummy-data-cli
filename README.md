@@ -2,6 +2,8 @@
 ## Background
 I want to create a simple tool to create random data. The tool should support .json, .csv and other extensions. 
 The user should define a javascript template and then feed that template into cli and output the files. 
+
+Make Dummy Data CLI avalible on npm to install as cli tool. 
 ## Idea of usage 
 User creates a .js file like the following: 
 ```
