@@ -10,11 +10,11 @@ import inquirer from 'inquirer';
 const program = new Command();
 
 program
-  .option('-t, --template <path>', 'Path to the template JS file')
-  .option('-s, --start <number>', 'Starting index', 0)
+  .option('-t, --template <string>', 'Path to the template JS file')
+  .option('-s, --start <number>', 'Starting index', 1)
   .option('-i, --increment <number>', 'Increment value', 1)
-  .option('-e, --stop <number>', 'Stopping index', 10500)
-  .option('-o, --output <path>', 'Output folder', './output')
+  .option('-e, --stop <number>', 'Stopping index', 10)
+  .option('-o, --output <string>', 'Output folder', '.')
   .option('-f, --file-prefix <string>', 'File name prefix', 'generated')
   .option('-x, --file-extension <string>', 'File extension', 'json')
   .option('-p, --separator <string>', 'File name separator', '_')
@@ -51,18 +51,20 @@ const fileNameSeparator = options.separator;
     }
 
     for (let index = start; index < stop; index += increments) {
-      console.log(`Writing file ${index}.${fileExtension}`);
+      const fileName = `${fileNamePrefix}${fileNameSeparator}${index}.${fileExtension}`
+      console.log(`Writing file ${fileName}`);
       const template = main(index);
-      console.log(template);
+
       const parsedData = dummyjson.parse(template);
-      const filePath = path.join(outputFolder, `${fileNamePrefix}${fileNameSeparator}${index}.${fileExtension}`);
+      const filePath = path.join(outputFolder, fileName);
 
       await fs.mkdir(outputFolder, { recursive: true });
       await fs.writeFile(filePath, parsedData);
-      console.log(`File ${index}.${fileExtension} written successfully.`);
+      console.log(`File ${fileName} written successfully.`);
     }
+    
   } catch (err) {
-    console.error(`Error: ${err.message}`);
+    console.error(`Error Message: ${err.message}.\nRaw error: ${err}`);
   }
 })();
 
