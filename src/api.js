@@ -19,8 +19,7 @@ export class DDG {
 
   async generateFile() {
     if (this.counter >= this.stop) {
-      console.log("All files have been generated.");
-      return;
+      return false;
     }
 
     const { main } = await this.loadTemplate(this.templatePath);
@@ -28,14 +27,13 @@ export class DDG {
     this.counter += this.increments;
 
     const finalFileName = `${this.fileNamePrefix}${this.fileNameSeparator}${index}.${this.fileExtension}`;
-    console.log(`Writing file ${finalFileName}`);
     const dynamicTemplate = main(index);
 
     const parsedData = dummyjson.parse(dynamicTemplate);
     const filePath = path.join(this.outputFolder, finalFileName);
 
     await this.writeFile(this.outputFolder, filePath, parsedData);
-    console.log(`File ${finalFileName} written successfully.`);
+    return true;
   }
   calculateIterations(start, increments, stop) {
     if (increments <= 0) {

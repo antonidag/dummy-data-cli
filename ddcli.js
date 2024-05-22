@@ -3,6 +3,7 @@
 import { Command } from 'commander';
 import inquirer from 'inquirer';
 import { DDG } from './src/api.js';
+import cliProgress from 'cli-progress';
 
 const program = new Command();
 
@@ -31,11 +32,12 @@ const api = new DDG(fileNamePrefix, fileNameSeparator, fileExtension, start, sto
 
 (async function main() {
   try {
+    const numberOfFiles = api.calculateIterations(start, increments, stop)
     const { confirm } = await inquirer.prompt([
       {
         type: 'confirm',
         name: 'confirm',
-        message: `You are about to generate ${api.calculateIterations(start, increments, stop)} files.\nStarting at ${start} with increments of ${increments} and end at ${stop}?`,
+        message: `You are about to generate ${numberOfFiles} files.\nStarting at ${start} with increments of ${increments} and end at ${stop}?`,
         default: false,
       },
     ]);
@@ -43,7 +45,12 @@ const api = new DDG(fileNamePrefix, fileNameSeparator, fileExtension, start, sto
       console.log('Operation cancelled.');
       return;
     }
-    await api.generateFile();
+    const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+    bar.start(numberOfFiles, 0);
+    while (await api.generateFile()) {
+      bar.increment();
+    }
+    bar.stop();
 
   } catch (err) {
     console.error(`Error Message: ${err.message}.\nRaw error: ${err}`);
