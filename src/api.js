@@ -22,14 +22,14 @@ export class DDG {
       return false;
     }
 
-    const { main } = await this.loadTemplate(this.templatePath);
     const index = this.counter;
     this.counter += this.increments;
 
-    const finalFileName = `${this.fileNamePrefix}${this.fileNameSeparator}${index}.${this.fileExtension}`;
+    const { main } = await this.loadTemplate(this.templatePath);
     const dynamicTemplate = main(index);
-
     const parsedData = dummyjson.parse(dynamicTemplate);
+
+    const finalFileName = `${this.fileNamePrefix}${this.fileNameSeparator}${index}.${this.fileExtension}`;
     const filePath = path.join(this.outputFolder, finalFileName);
 
     await this.writeFile(this.outputFolder, filePath, parsedData);
