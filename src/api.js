@@ -14,22 +14,28 @@ export class DDG {
     this.increments = increments;
     this.outputFolder = outputFolder;
     this.templatePath = templatePath;
+    this.counter = 0;
   }
 
-  async generateFiles() {
-    const { main } = await this.loadTemplate(this.templatePath);
-
-    for (let index = this.start; index < this.stop; index += this.increments) {
-      const finalFileName = `${this.fileNamePrefix}${this.fileNameSeparator}${index}.${this.fileExtension}`
-      console.log(`Writing file ${finalFileName}`);
-      const dynamicTemplate = main(index);
-
-      const parsedData = dummyjson.parse(dynamicTemplate);
-      const filePath = path.join(this.outputFolder, finalFileName);
-
-      await this.writeFile(this.outputFolder, filePath, parsedData);
-      console.log(`File ${finalFileName} written successfully.`);
+  async generateFile() {
+    if (this.counter >= this.stop) {
+      console.log("All files have been generated.");
+      return;
     }
+
+    const { main } = await this.loadTemplate(this.templatePath);
+    const index = this.counter;
+    this.counter += this.increments;
+
+    const finalFileName = `${this.fileNamePrefix}${this.fileNameSeparator}${index}.${this.fileExtension}`;
+    console.log(`Writing file ${finalFileName}`);
+    const dynamicTemplate = main(index);
+
+    const parsedData = dummyjson.parse(dynamicTemplate);
+    const filePath = path.join(this.outputFolder, finalFileName);
+
+    await this.writeFile(this.outputFolder, filePath, parsedData);
+    console.log(`File ${finalFileName} written successfully.`);
   }
   calculateIterations(start, increments, stop) {
     if (increments <= 0) {

@@ -43,7 +43,7 @@ const api = new DDG(fileNamePrefix, fileNameSeparator, fileExtension, start, sto
       console.log('Operation cancelled.');
       return;
     }
-    await api.generateFiles();
+    await api.generateFile();
 
   } catch (err) {
     console.error(`Error Message: ${err.message}.\nRaw error: ${err}`);
