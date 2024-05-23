@@ -1,12 +1,13 @@
 import dummyjson from 'dummy-json';
-import fs from 'node:fs/promises';
+
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import writeFile from './utils';
 
 /**
  * Data Generation Class
  */
-export class DDG {
+export class DummyDataGenerator {
   /**
    * Constructs an instance of the DDG class.
    * @param {string} fileNamePrefix - The prefix for the generated file names.
@@ -50,7 +51,7 @@ export class DDG {
       const finalFileName = `${this.fileNamePrefix}${this.fileNameSeparator}${index}.${this.fileExtension}`;
       const filePath = path.join(this.outputFolder, finalFileName);
 
-      await this.writeFile(this.outputFolder, filePath, parsedData);
+      await writeFile(this.outputFolder, filePath, parsedData);
       return true;
     } catch (error) {
       console.error('Error generating file:', error);
@@ -87,24 +88,6 @@ export class DDG {
       return await import(templateURL);
     } catch (error) {
       console.error(`Error loading template from ${pathToFile}:`, error);
-      throw error;
-    }
-  }
-
-  /**
-   * Writes parsed data to a file, creating directories as needed.
-   * @param {string} outputFolder - The folder where the file will be saved.
-   * @param {string} filePath - The full path to the file.
-   * @param {string} parsedData - The data to be written to the file.
-   * @returns {Promise<boolean>}
-   */
-  async writeFile(outputFolder, filePath, parsedData) {
-    try {
-      await fs.mkdir(outputFolder, { recursive: true });
-      await fs.writeFile(filePath, parsedData);
-      return true
-    } catch (error) {
-      console.error(`Error writing file to ${filePath}:`, error);
       throw error;
     }
   }

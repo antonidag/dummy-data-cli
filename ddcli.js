@@ -2,7 +2,7 @@
 
 import { Command } from 'commander';
 import inquirer from 'inquirer';
-import { DDG } from './src/api.js';
+import { DummyDataGenerator } from './src/ddg.js';
 import cliProgress from 'cli-progress';
 
 const program = new Command();
@@ -28,11 +28,11 @@ const fileExtension = options.fileExtension;
 const fileNamePrefix = options.filePrefix;
 const fileNameSeparator = options.separator;
 const templatePath = options.template;
-const api = new DDG(fileNamePrefix, fileNameSeparator, fileExtension, start, stop, increments, outputFolder, templatePath);
+const ddg = new DummyDataGenerator(fileNamePrefix, fileNameSeparator, fileExtension, start, stop, increments, outputFolder, templatePath);
 
 (async function main() {
   try {
-    const numberOfFiles = api.calculateIterations(start, increments, stop)
+    const numberOfFiles = ddg.calculateIterations(start, increments, stop)
     const { confirm } = await inquirer.prompt([
       {
         type: 'confirm',
@@ -47,7 +47,7 @@ const api = new DDG(fileNamePrefix, fileNameSeparator, fileExtension, start, sto
     }
     const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
     bar.start(numberOfFiles, 0);
-    while (await api.generateFile()) {
+    while (await ddg.generateFile()) {
       bar.increment();
     }
     bar.stop();
