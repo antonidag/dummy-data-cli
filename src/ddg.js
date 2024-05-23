@@ -1,7 +1,7 @@
 import dummyjson from 'dummy-json';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import writeFile from './utils';
+import { writeFile } from './utils.js';
 
 /**
  * Data Generation Class
