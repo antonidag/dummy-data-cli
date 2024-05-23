@@ -4,6 +4,7 @@ import { Command } from 'commander';
 import inquirer from 'inquirer';
 import { DummyDataGenerator } from './src/ddg.js';
 import cliProgress from 'cli-progress';
+import calculateIterations from './src/utils.js'
 
 const program = new Command();
 
@@ -32,7 +33,7 @@ const ddg = new DummyDataGenerator(fileNamePrefix, fileNameSeparator, fileExtens
 
 (async function main() {
   try {
-    const numberOfFiles = ddg.calculateIterations(start, increments, stop)
+    const numberOfFiles = calculateIterations();
     const { confirm } = await inquirer.prompt([
       {
         type: 'confirm',

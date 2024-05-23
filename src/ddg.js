@@ -1,5 +1,4 @@
 import dummyjson from 'dummy-json';
-
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import writeFile from './utils';
@@ -57,23 +56,6 @@ export class DummyDataGenerator {
       console.error('Error generating file:', error);
       throw error;
     }
-  }
-
-
-  /**
-   * Calculates the number of iterations based on start, increments, and stop values.
-   * @param {number} start - The starting index.
-   * @param {number} increments - The increment value for each iteration.
-   * @param {number} stop - The stopping index.
-   * @returns {number} - The number of iterations.
-   * @throws {Error} - Throws an error if increments is not a positive number.
-   */
-  calculateIterations(start, increments, stop) {
-    if (increments <= 0) {
-      throw new Error("Increments must be a positive number");
-    }
-    const iterations = (stop - start) / increments;
-    return iterations;
   }
 
   /**
