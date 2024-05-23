@@ -35,23 +35,29 @@ export class DDG {
    * @returns {Promise<boolean>} - Returns true if the file was generated, false if the stop condition is met.
    */
   async generateFile() {
-    if (this.counter >= this.stop) {
-      return false;
+    try {
+      if (this.counter >= this.stop) {
+        return false;
+      }
+
+      const index = this.counter;
+      this.counter += this.increments;
+
+      const { main } = await this.loadTemplate(this.templatePath);
+      const dynamicTemplate = main(index);
+      const parsedData = dummyjson.parse(dynamicTemplate);
+
+      const finalFileName = `${this.fileNamePrefix}${this.fileNameSeparator}${index}.${this.fileExtension}`;
+      const filePath = path.join(this.outputFolder, finalFileName);
+
+      await this.writeFile(this.outputFolder, filePath, parsedData);
+      return true;
+    } catch (error) {
+      console.error('Error generating file:', error);
+      throw error;
     }
-
-    const index = this.counter;
-    this.counter += this.increments;
-
-    const { main } = await this.loadTemplate(this.templatePath);
-    const dynamicTemplate = main(index);
-    const parsedData = dummyjson.parse(dynamicTemplate);
-
-    const finalFileName = `${this.fileNamePrefix}${this.fileNameSeparator}${index}.${this.fileExtension}`;
-    const filePath = path.join(this.outputFolder, finalFileName);
-
-    await this.writeFile(this.outputFolder, filePath, parsedData);
-    return true;
   }
+
 
   /**
    * Calculates the number of iterations based on start, increments, and stop values.
@@ -75,10 +81,14 @@ export class DDG {
    * @returns {Promise<Object>} - The imported template module.
    */
   async loadTemplate(pathToFile) {
-    const templatePath = path.resolve(pathToFile);
-    const templateURL = pathToFileURL(templatePath).href;
-
-    return await import(templateURL);
+    try {
+      const templatePath = path.resolve(pathToFile);
+      const templateURL = pathToFileURL(templatePath).href;
+      return await import(templateURL);
+    } catch (error) {
+      console.error(`Error loading template from ${pathToFile}:`, error);
+      throw error;
+    }
   }
 
   /**
@@ -86,10 +96,16 @@ export class DDG {
    * @param {string} outputFolder - The folder where the file will be saved.
    * @param {string} filePath - The full path to the file.
    * @param {string} parsedData - The data to be written to the file.
-   * @returns {Promise<void>}
+   * @returns {Promise<boolean>}
    */
   async writeFile(outputFolder, filePath, parsedData) {
-    await fs.mkdir(outputFolder, { recursive: true });
-    await fs.writeFile(filePath, parsedData);
+    try {
+      await fs.mkdir(outputFolder, { recursive: true });
+      await fs.writeFile(filePath, parsedData);
+      return true
+    } catch (error) {
+      console.error(`Error writing file to ${filePath}:`, error);
+      throw error;
+    }
   }
 }
