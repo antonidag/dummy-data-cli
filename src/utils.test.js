@@ -1,7 +1,6 @@
 import { calculateIterations, writeFile } from './utils.js'; // Make sure to import the function correctly
 import fs from 'fs/promises'; // Import fs module for mocking
 
-
 jest.mock('fs/promises');
 
 describe('writeFile', () => {
@@ -60,7 +59,6 @@ describe('calculateIterations', () => {
         const increments = 2;
         const stop = 10;
         const result = calculateIterations(start, increments, stop);
-        console.log(result)
         expect(result).toBe(5);
     });
 

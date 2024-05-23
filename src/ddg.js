@@ -53,8 +53,7 @@ export class DummyDataGenerator {
       await writeFile(this.outputFolder, filePath, parsedData);
       return true;
     } catch (error) {
-      console.error('Error generating file:', error);
-      throw error;
+      throw new Error(`Error generating file: ${error}`);
     }
   }
 
@@ -69,8 +68,7 @@ export class DummyDataGenerator {
       const templateURL = pathToFileURL(templatePath).href;
       return await import(templateURL);
     } catch (error) {
-      console.error(`Error loading template from ${pathToFile}:`, error);
-      throw error;
+      throw new Error(`Error loading template from ${pathToFile}: ${error}` );
     }
   }
 }
