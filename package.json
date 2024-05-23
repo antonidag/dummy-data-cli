@@ -1,10 +1,28 @@
 {
   "name": "ddcli",
   "version": "1.0.0",
-  "description": "",
+  "description": "CLI tool for generating dummy data based on templates",
   "main": "ddcli.js",
   "bin": {
     "ddcli": "./ddcli.js"
+  },
+  "keywords": [
+    "cli",
+    "dummy",
+    "template",
+    "generator",
+    "data",
+    "json"
+  ],
+  "author": "Anton Björkman",
+  "license": "MIT",
+  "homepage": "https://github.com/antonidag/dummy-data-cli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antonidag/dummy-data-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antonidag/dummy-data-cli/issues"
   },
   "dependencies": {
     "cli-progress": "^3.12.0",
