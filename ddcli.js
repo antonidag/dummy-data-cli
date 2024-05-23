@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import dummyjson from 'dummy-json';
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import { pathToFileURL } from 'node:url';
 import inquirer from 'inquirer';
+import { DummyDataGenerator } from './src/ddg.js';
+import cliProgress from 'cli-progress';
+import { calculateIterations } from './src/utils.js'
 
 const program = new Command();
 
@@ -29,50 +28,32 @@ const outputFolder = options.output;
 const fileExtension = options.fileExtension;
 const fileNamePrefix = options.filePrefix;
 const fileNameSeparator = options.separator;
+const templatePath = options.template;
+const ddg = new DummyDataGenerator(fileNamePrefix, fileNameSeparator, fileExtension, start, stop, increments, outputFolder, templatePath);
 
-(async function generateFiles() {
+(async function main() {
   try {
-    const templatePath = path.resolve(options.template);
-    const templateURL = pathToFileURL(templatePath).href;
-    const { main } = await import(templateURL);
-
+    const numberOfFiles = calculateIterations(start,increments,start);
     const { confirm } = await inquirer.prompt([
       {
         type: 'confirm',
         name: 'confirm',
-        message: `You are about to generate ${calculateIterations(start, increments, stop)} files.\nStarting at ${start} with increments of ${increments} and end at ${stop}?\nTemplate: ${String(main)}`,
+        message: `You are about to generate ${numberOfFiles} files.\nStarting at ${start} with increments of ${increments} and end at ${stop}?`,
         default: false,
       },
     ]);
-
     if (!confirm) {
       console.log('Operation cancelled.');
       return;
     }
-
-    for (let index = start; index < stop; index += increments) {
-      const fileName = `${fileNamePrefix}${fileNameSeparator}${index}.${fileExtension}`
-      console.log(`Writing file ${fileName}`);
-      const template = main(index);
-
-      const parsedData = dummyjson.parse(template);
-      const filePath = path.join(outputFolder, fileName);
-
-      await fs.mkdir(outputFolder, { recursive: true });
-      await fs.writeFile(filePath, parsedData);
-      console.log(`File ${fileName} written successfully.`);
+    const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+    bar.start(numberOfFiles, 0);
+    while (await ddg.generateFile()) {
+      bar.increment();
     }
-    
+    bar.stop();
+
   } catch (err) {
     console.error(`Error Message: ${err.message}.\nRaw error: ${err}`);
   }
 })();
-
-function calculateIterations(start, increments, stop) {
-  if (increments <= 0) {
-    throw new Error("Increments must be a positive number");
-  }
-
-  const iterations = (stop - start) / increments;
-  return iterations;
-}
