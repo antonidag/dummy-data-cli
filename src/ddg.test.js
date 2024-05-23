@@ -1,8 +1,6 @@
 // Import necessary modules and the DummyDataGenerator class
 import { DummyDataGenerator } from './ddg.js';
 import * as dummyjson from 'dummy-json';
-import path from 'node:path';
-import { pathToFileURL } from 'node:url';
 import { writeFile } from './utils.js';
 
 // Mock the dependencies
