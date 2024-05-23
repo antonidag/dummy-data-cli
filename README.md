@@ -28,6 +28,10 @@ Then the user will only run the cli:
 
 ## Templating
 The Dummy Data CLI leverages the powerful templating engine provided by [dummy-json](https://www.npmjs.com/package/dummy-json) to generate realistic and customizable dummy data. Templates are defined using a combination of JSON structure and JavaScript functions, allowing for dynamic content generation.
+
+### Template Requirements
+- Your template file must export a function named `main`. This function should accept a single parameter.
+- Templates are created as `.js` files, allowing you to use JavaScript to dynamically modify your templates. The main function must return the template as a string.
 ### Example Template:
 ```
 // Define a JavaScript function that returns a template string
