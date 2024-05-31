@@ -37,7 +37,6 @@
   },
   "type": "module",
   "scripts": {
-    "test": "jest",
     "bump-version": "npx automatic-versioning --name=ddcli"
   },
   "devDependencies": {
