@@ -16,11 +16,11 @@ ddcli [options]
 #### Options
 - -t, --template <path>: Path to the template file (required).
 - -o, --output <folder>: Output folder where generated files will be saved (default: current directory).
-- -p, --prefix <prefix>: Prefix for generated file names (default: 'dummy').
-- -s, --separator <separator>: Separator used in generated file names (default: '_').
-- -e, --extension <extension>: Extension for generated files (default: 'json').
-- -b, --start <number>: Starting index for file generation (default: 0).
-- -l, --stop <number>: Stopping index for file generation (default: 10).
+- -f, --file-prefix <prefix>: Prefix for generated file names (default: 'dummy').
+- -p, --separator <separator>: Separator used in generated file names (default: '_').
+- -x, --file-extension <extension>: Extension for generated files (default: 'json').
+- -s, --start <number>: Starting index for file generation (default: 0).
+- -e, --stop <number>: Stopping index for file generation (default: 10).
 - -i, --increments <number>: Increment value for each file name (default: 1).
 
 
