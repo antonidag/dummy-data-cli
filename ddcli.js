@@ -55,7 +55,7 @@ import { calculateIterations, validateFilePathString } from './src/utils.js'
     return 0;
 
   } catch (err) {
-    console.error(`Error Message: ${err}`);
+    console.error(`${err}`);
     return 1;
   }
 })();
