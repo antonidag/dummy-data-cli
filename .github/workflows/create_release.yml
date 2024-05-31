@@ -5,9 +5,6 @@ on:
         description: 'Release notes'
         required: true
         default: 'Changes in this Release\n- First Change\n- Second Change'
-      tag_name:
-        description: 'Tag name'
-        required: true
       release_name:
         description: 'Release name'
         required: true
@@ -22,14 +19,27 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      
+      - name: Get version from package.json
+        id: get_version
+        run: |
+          version=$(jq -r '.version' package.json)
+          echo "::set-output name=version::$version"
+      
+      - name: Construct release name
+        id: construct_release_name
+        run: |
+          release_name="${{ steps.get_version.outputs.version }}: ${{ github.event.inputs.release_name }}"
+          echo "::set-output name=release_name::$release_name"
+      
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions
         with:
-          tag_name: ${{ github.event.inputs.tag_name }}
-          release_name: ${{ github.event.inputs.release_name }}
+          tag_name: ${{ steps.get_version.outputs.version }}
+          release_name: ${{ steps.construct_release_name.outputs.release_name }}
           body: ${{ github.event.inputs.release_notes }}
           draft: false
           prerelease: false
