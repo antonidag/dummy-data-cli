@@ -31,3 +31,19 @@ export function calculateIterations(start, increments, stop) {
   const iterations = (stop - start) / increments;
   return iterations;
 }
+
+/**
+ * Validates input to be an non empty string
+ * @param {string} input - The input string.
+ * @param {string} flag - The flag string.
+ * @throws {Error} - Throws an error if input is empty or not a string.
+ */
+export function validateFilePathString(input, flag) {
+  if (typeof input != 'string') {
+    throw new Error(`${flag}: input was not a string`);
+  }
+  if (input.length == 0) {
+    return new Error(`${flag}: input was not a string`);
+  }
+  return input;
+}
