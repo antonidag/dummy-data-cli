@@ -32,14 +32,14 @@ jobs:
           release_name="${{ steps.get_version.outputs.version }}: ${{ github.event.inputs.release_name }}"
           echo "::set-output name=release_name::$release_name"
       
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions
+      - name: Release
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.get_version.outputs.version }}
-          release_name: ${{ steps.construct_release_name.outputs.release_name }}
           body: ${{ github.event.inputs.release_notes }}
+          name: ${{ steps.construct_release_name.outputs.release_name }}
+          tag_name: ${{ steps.get_version.outputs.version }}
+          repository: antonidag/dummy-data-cli
+          token: ${{ secrets.GH_PAT }}
+          make_latest: true
           draft: false
           prerelease: false
