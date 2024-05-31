@@ -16,14 +16,12 @@ ddcli [options]
 #### Options
 - -t, --template <path>: Path to the template file (required).
 - -o, --output <folder>: Output folder where generated files will be saved (default: current directory).
-- -n, --count <number>: Number of files to generate (default: 1).
 - -p, --prefix <prefix>: Prefix for generated file names (default: 'dummy').
 - -s, --separator <separator>: Separator used in generated file names (default: '_').
 - -e, --extension <extension>: Extension for generated files (default: 'json').
 - -b, --start <number>: Starting index for file generation (default: 0).
 - -l, --stop <number>: Stopping index for file generation (default: 10).
 - -i, --increments <number>: Increment value for each file name (default: 1).
-Then the user will only run the cli: 
 
 
 ## Templating
@@ -68,8 +66,13 @@ In this example:
 
 By combining JSON structure with JavaScript functions, you have full control over the structure and content of the generated dummy data. Customize the template according to your specific data requirements.
 
+See more examples [here]().
+
 ## Example
 Generate 5 JSON files with dummy user data:
 ```
 ddcli -t template.js -s 0 -i 2 -e 10 -o ./output
 ```
+
+## License
+The source code for the site is licensed under the MIT license, which you can find in the LICENSE file.
