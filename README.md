@@ -1,12 +1,38 @@
 # Dummy Data CLI
 ## Background
-I want to create a simple tool to create random data. The tool should support .json, .csv and other extensions. 
-The user should define a javascript template and then feed that template into cli and output the files. 
-
-Make Dummy Data CLI avalible on npm to install as cli tool. 
-## Idea of usage 
-User creates a .js file like the following: 
+The Dummy Data CLI is a command-line interface tool that generates dummy data based on templates and saves it to files. It's useful for generating sample data for testing, prototyping, or populating databases.
+## Installation 
+You can install the Dummy Data CLI globally using npm:
 ```
+npm install -g dummy-data-cli
+```
+
+## Usage
+### Generating Dummy Data
+To generate dummy data, use the generate command followed by the desired options:
+```
+ddcli [options]
+```
+#### Options
+- -t, --template <path>: Path to the template file (required).
+- -o, --output <folder>: Output folder where generated files will be saved (default: current directory).
+- -p, --prefix <prefix>: Prefix for generated file names (default: 'dummy').
+- -s, --separator <separator>: Separator used in generated file names (default: '_').
+- -e, --extension <extension>: Extension for generated files (default: 'json').
+- -b, --start <number>: Starting index for file generation (default: 0).
+- -l, --stop <number>: Stopping index for file generation (default: 10).
+- -i, --increments <number>: Increment value for each file name (default: 1).
+
+
+## Templating
+The Dummy Data CLI leverages the powerful templating engine provided by [dummy-json](https://www.npmjs.com/package/dummy-json) to generate realistic and customizable dummy data. Templates are defined using a combination of JSON structure and JavaScript functions, allowing for dynamic content generation.
+
+### Template Requirements
+- Your template file must export a function named `main`. This function should accept a single parameter.
+- Templates are created as `.js` files, allowing you to use JavaScript to dynamically modify your templates. The main function must return the template as a string.
+### Example Template:
+```
+// Define a JavaScript function that returns a template string
 export function main(index) {
     return `
     [
@@ -31,12 +57,22 @@ export function main(index) {
     ]`
 }
 ```
-Then the user will only run the cli: 
-```
-ddcli -t ./templates/main.js -i 500 -s 0 -e 10500 -o ./output
-```
-This will then create 21, starting from 0, stoping at 10500 with increments of 500. 
 
-## Potentials features
-- Instead of using [dummy-json](https://www.npmjs.com/package/dummy-json) perhaps look into [Faker.js](https://fakerjs.dev/) since community and more well used framework.
-- Switch out to Typescript! Or just use JSDoc? 
+In this example:
+
+- The main function is exported, which accepts an index parameter.
+- Within the template string, `{{#repeat ${index}}}` is used to repeat the template block based on the value of index.
+- Placeholders like `{{firstName}}`, `{{lastName}}`, etc., are used to generate random data using built-in dummy-json helpers.
+
+By combining JSON structure with JavaScript functions, you have full control over the structure and content of the generated dummy data. Customize the template according to your specific data requirements.
+
+See more examples [here]().
+
+## Example
+Generate 5 JSON files with dummy user data:
+```
+ddcli -t template.js -s 0 -i 2 -e 10 -o ./output
+```
+
+## License
+The source code for the site is licensed under the MIT license, which you can find in the LICENSE file.
