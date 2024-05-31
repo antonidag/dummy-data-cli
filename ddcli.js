@@ -33,7 +33,7 @@ const ddg = new DummyDataGenerator(fileNamePrefix, fileNameSeparator, fileExtens
 
 (async function main() {
   try {
-    const numberOfFiles = calculateIterations(start,increments,stop);
+    const numberOfFiles = calculateIterations(start, increments, stop);
     const { confirm } = await inquirer.prompt([
       {
         type: 'confirm',
