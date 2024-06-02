@@ -4,7 +4,7 @@ The Dummy Data CLI is a command-line interface tool that generates dummy data ba
 ## Installation 
 You can install the Dummy Data CLI globally using npm:
 ```
-npm install -g dummy-data-cli
+npm install -g @antonidag/ddcli@1.0.5
 ```
 
 ## Usage
