@@ -1,6 +1,6 @@
 {
   "name": "@antonidag/ddcli",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "CLI tool for generating dummy data based on templates",
   "main": "ddcli.js",
   "bin": {
