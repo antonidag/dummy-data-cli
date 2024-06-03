@@ -1,4 +1,5 @@
 import fs from 'fs/promises';
+import { stat } from 'fs/promises'
 /**
 * Writes parsed data to a file, creating directories as needed.
 * @param {string} outputFolder - The folder where the file will be saved.
@@ -28,6 +29,67 @@ export function calculateIterations(start, increments, stop) {
   if (increments <= 0) {
     throw new Error("Increments must be a positive number");
   }
-  const iterations = (stop - start) / increments;
+  const iterations = stop / increments;
   return iterations;
 }
+
+/**
+ * Validates input to be an non empty string
+ * @param {string} input - The input string.
+ * @param {string} flag - The flag string.
+ * @returns {number} - The valid string.
+ * @throws {Error} - Throws an error if input is empty or not a string.
+ */
+export function validateString(input, flag) {
+  if (typeof input != 'string') {
+    throw new Error(`${flag}: input was not a string`);
+  }
+  if (input.length == 0) {
+    throw new Error(`${flag}: input was not a string`);
+  }
+  return input;
+}
+
+/**
+ * Validates file to exists
+ * @param {string} input - The input string.
+ * @param {string} flag - The flag string.
+ * @returns {string} - The valid file path.
+ * @throws {Error} - Throws an error if file does not exists.
+ */
+export async function validateFile(input, flag) {
+
+  const validString = validateString(input)
+
+  try {
+    const isFile = await stat(input)
+  }
+  catch (e) {
+    throw new Error(`${flag}: ${e.message}`)
+  }
+
+  return validString;
+}
+
+/**
+ * Validates input to be an integer
+ * @param {string} input - The input string.
+ * @param {string} flag - The flag string.
+ * @returns {number} - The valid number.
+ * @throws {Error} - Throws an error if input is not an integer.
+ */
+export function validateInteger(input, flag) {
+
+  const isInteger = parseInt(input);
+  if (Number.isNaN(isInteger)) {
+    throw new Error(`${flag}: input was not a number`);
+  }
+  if (!Number.isInteger(isInteger)) {
+    throw new Error(`${flag}: input was not a integer`);
+  }
+  if (isInteger < 0) {
+    throw new Error(`${flag}: input was less than 0`)
+  }
+  return isInteger;
+}
+

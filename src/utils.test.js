@@ -1,5 +1,6 @@
-import { calculateIterations, writeFile } from './utils.js'; // Make sure to import the function correctly
+import { calculateIterations, writeFile, validateInteger, validateString } from './utils.js'; // Make sure to import the function correctly
 import fs from 'fs/promises'; // Import fs module for mocking
+
 
 jest.mock('fs/promises');
 
@@ -51,8 +52,6 @@ describe('writeFile', () => {
     });
 });
 
-
-
 describe('calculateIterations', () => {
     it('should calculate the correct number of iterations', () => {
         const start = 0;
@@ -83,5 +82,56 @@ describe('calculateIterations', () => {
         const stop = 10;
         const result = calculateIterations(start, increments, stop);
         expect(result).toBe(4);
+    });
+});
+
+
+describe('validateInteger', () => {
+    it('should return number', () => {
+        const isValidInteger = 0;
+        const flag = 'test'
+        const result = validateInteger(isValidInteger, flag);
+        expect(result).toBe(0);
+    });
+
+    it('should return integer even if float is as input', () => {
+        const isValidInteger = 1.234;
+        const flag = 'test'
+        const result = validateInteger(isValidInteger, flag);
+        expect(result).toBe(1);
+    });
+
+    it('should throw an error if input is not a number', () => {
+        const isNotValidInteger = 'Hello_World';
+        const flag = 'test'
+        expect(() => validateInteger(isNotValidInteger, flag)).toThrow(`${flag}: input was not a number`);
+    });
+
+    it('should throw an error if input is not a positive number', () => {
+        const isNotValidInteger = -1;
+        const flag = 'test'
+        expect(() => validateInteger(isNotValidInteger, flag)).toThrow(`${flag}: input was less than 0`);
+    });
+});
+
+
+describe('validateFilePathString', () => {
+    it('should return string', () => {
+        const isValidString = 'HelloWorld';
+        const flag = 'test'
+        const result = validateString(isValidString, flag);
+        expect(result).toBe("HelloWorld");
+    });
+
+    it('should throw an error if input is not a string', () => {
+        const isNotValidString = -1;
+        const flag = 'test'
+        expect(() => validateString(isNotValidString, flag)).toThrow(`${flag}: input was not a string`);
+    });
+
+    it('should throw an error if input string is empty', () => {
+        const isNotValidString = '';
+        const flag = 'test'
+        expect(() => validateString(isNotValidString, flag)).toThrow(`${flag}: input was not a string`);
     });
 });
