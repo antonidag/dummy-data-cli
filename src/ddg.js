@@ -27,16 +27,16 @@ export class DummyDataGenerator {
     this.increments = increments;
     this.outputFolder = outputFolder;
     this.templatePath = templatePath;
-    this.counter = 0;
+    this.counter = start;
   }
 
   /**
-   * Generates a file with the current counter value and updates the counter.
+   * Generates a file with the current start value and updates the increments.
    * @returns {Promise<boolean>} - Returns true if the file was generated, false if the stop condition is met.
    */
   async generateFile() {
     try {
-      if (this.counter >= this.stop) {
+      if (this.counter >= this.stop + this.start) {
         return false;
       }
 
@@ -68,7 +68,7 @@ export class DummyDataGenerator {
       const templateURL = pathToFileURL(templatePath).href;
       return await import(templateURL);
     } catch (error) {
-      throw new Error(`Error loading template from ${pathToFile}: ${error}` );
+      throw new Error(`Error loading template from ${pathToFile}: ${error}`);
     }
   }
 }

@@ -28,7 +28,7 @@ export function calculateIterations(start, increments, stop) {
   if (increments <= 0) {
     throw new Error("Increments must be a positive number");
   }
-  const iterations = (stop - start) / increments;
+  const iterations = stop / increments;
   return iterations;
 }
 
