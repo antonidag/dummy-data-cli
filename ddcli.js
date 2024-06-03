@@ -4,7 +4,7 @@ import { Command } from 'commander';
 import inquirer from 'inquirer';
 import { DummyDataGenerator } from './src/ddg.js';
 import cliProgress from 'cli-progress';
-import { calculateIterations, validateFilePathString, validateInteger } from './src/utils.js'
+import { calculateIterations, validateString, validateInteger, validateFile } from './src/utils.js'
 
 (async function main() {
   try {
@@ -23,7 +23,7 @@ import { calculateIterations, validateFilePathString, validateInteger } from './
 
     const options = program.opts();
 
-    const { fileNamePrefix, fileNameSeparator, fileExtension, start, stop, increments, outputFolder, templatePath } = validateInputs(options);
+    const { fileNamePrefix, fileNameSeparator, fileExtension, start, stop, increments, outputFolder, templatePath } = await validateInputs(options);
 
     const ddg = new DummyDataGenerator(fileNamePrefix, fileNameSeparator, fileExtension, start, stop, increments, outputFolder, templatePath);
 
@@ -54,14 +54,14 @@ import { calculateIterations, validateFilePathString, validateInteger } from './
   }
 })();
 
-function validateInputs(options) {
+async function validateInputs(options) {
   const start = validateInteger(options.start, '--start <number>');
   const increments = validateInteger(options.increment, '--increment <number>');
   const stop = validateInteger(options.stop, '--stop <number>');
-  const outputFolder = validateFilePathString(options.output, '--output <string>');
+  const outputFolder = validateString(options.output, '--output <string>');
   const fileExtension = options.fileExtension;
   const fileNamePrefix = options.filePrefix;
   const fileNameSeparator = options.separator;
-  const templatePath = validateFilePathString(options.template, '--template <string>');
+  const templatePath = await validateFile(options.template, '--template <string>');
   return { fileNamePrefix, fileNameSeparator, fileExtension, start, stop, increments, outputFolder, templatePath };
 }
