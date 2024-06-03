@@ -66,7 +66,7 @@ In this example:
 
 By combining JSON structure with JavaScript functions, you have full control over the structure and content of the generated dummy data. Customize the template according to your specific data requirements.
 
-See more examples [here]().
+See more examples in folder `templates`.
 
 ## Example
 Generate 5 JSON files with dummy user data:
