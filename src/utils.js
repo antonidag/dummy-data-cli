@@ -36,6 +36,7 @@ export function calculateIterations(start, increments, stop) {
  * Validates input to be an non empty string
  * @param {string} input - The input string.
  * @param {string} flag - The flag string.
+ * @returns {number} - The valid string.
  * @throws {Error} - Throws an error if input is empty or not a string.
  */
 export function validateFilePathString(input, flag) {
@@ -43,7 +44,29 @@ export function validateFilePathString(input, flag) {
     throw new Error(`${flag}: input was not a string`);
   }
   if (input.length == 0) {
-    return new Error(`${flag}: input was not a string`);
+    throw new Error(`${flag}: input was not a string`);
   }
   return input;
+}
+
+/**
+ * Validates input to be an integer
+ * @param {string} input - The input string.
+ * @param {string} flag - The flag string.
+ * @returns {number} - The valid number.
+ * @throws {Error} - Throws an error if input is not an integer.
+ */
+export function validateInteger(input, flag) {
+
+  const isInteger = parseInt(input);
+  if (Number.isNaN(isInteger)) {
+    throw new Error(`${flag}: input was not a number`);
+  }
+  if(!Number.isInteger(isInteger)){
+    throw new Error(`${flag}: input was not a integer`);
+  }
+  if(isInteger < 0){
+    throw new Error(`${flag}: input was less than 0`)
+  }
+  return isInteger;
 }
